@@ -1,0 +1,22 @@
+[
+  {"id": "stripe",      "name": "Stripe",       "source": "greenhouse", "board": "stripe"},
+  {"id": "databricks",  "name": "Databricks",   "source": "greenhouse", "board": "databricks"},
+  {"id": "figma",       "name": "Figma",        "source": "greenhouse", "board": "figma"},
+  {"id": "coinbase",    "name": "Coinbase",     "source": "greenhouse", "board": "coinbase"},
+  {"id": "cloudflare",  "name": "Cloudflare",   "source": "greenhouse", "board": "cloudflare"},
+  {"id": "pinterest",   "name": "Pinterest",    "source": "greenhouse", "board": "pinterest"},
+  {"id": "datadog",     "name": "Datadog",      "source": "greenhouse", "board": "datadog"},
+  {"id": "lyft",        "name": "Lyft",         "source": "greenhouse", "board": "lyft"},
+  {"id": "waymo",       "name": "Waymo",        "source": "greenhouse", "board": "waymo"},
+  {"id": "spacex",      "name": "SpaceX",       "source": "greenhouse", "board": "spacex"},
+  {"id": "anduril",     "name": "Anduril",      "source": "greenhouse", "board": "andurilindustries"},
+  {"id": "jumptrading", "name": "Jump Trading", "source": "greenhouse", "board": "jumptrading"},
+  {"id": "palantir",    "name": "Palantir",     "source": "lever",      "board": "palantir"},
+  {"id": "notion",      "name": "Notion",       "source": "ashby",      "board": "notion"},
+  {"id": "ramp",        "name": "Ramp",         "source": "ashby",      "board": "ramp"},
+  {"id": "cohere",      "name": "Cohere",       "source": "ashby",      "board": "cohere"},
+  {"id": "servicenow",  "name": "ServiceNow",   "source": "smartrecruiters", "board": "ServiceNow", "query": "intern", "max_pages": 3},
+  {"id": "amazon",      "name": "Amazon",       "source": "amazon",     "query": "intern", "max_pages": 5},
+  {"id": "janestreet",  "name": "Jane Street",  "source": "janestreet"},
+  {"id": "nvidia",      "name": "NVIDIA",       "source": "workday",    "host": "nvidia.wd5.myworkdayjobs.com", "site": "NVIDIAExternalCareerSite", "query": "intern"}
+]

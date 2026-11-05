@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "intern-radar"
+version = "0.1.0"
+description = "Internship openings from many company careers sites in one list, fetched through String Web Access."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+dependencies = []
+
+[project.scripts]
+intern-radar = "internradar.cli:main"
+
+[tool.setuptools]
+packages = ["internradar", "internradar.sources"]

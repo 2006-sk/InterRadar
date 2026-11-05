@@ -1,0 +1,15 @@
+# secrets
+.env
+
+# full raw responses (large, re-creatable); the trimmed copy lives in snapshot/
+data/raw/
+
+# local database (a fresh one is created on first run)
+*.db
+*.db-journal
+
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+.DS_Store
