@@ -16,7 +16,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-USER_AGENT = "internradar/0.1 (+https://github.com/2006-sk/intern-radar)"
+USER_AGENT = "internradar/0.1 (+https://github.com/2006-sk/Stringinterview)"
 
 
 class FetchError(Exception):

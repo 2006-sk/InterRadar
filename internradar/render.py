@@ -3,12 +3,12 @@
 from __future__ import annotations
 
 import csv
-import html
 import io
 import json
 import shutil
+from collections import Counter
 
-FIELDS = ["company", "title", "location", "posted", "url"]
+from .models import CATEGORIES, categorize
 
 
 def posted_label(row: dict) -> str:
@@ -22,7 +22,7 @@ def public_rows(rows: list[dict], new_run: int | None = None) -> list[dict]:
         out.append({
             "company": r["company"], "title": r["title"], "location": r["location"],
             "posted_at": r["posted_at"], "posted_text": r["posted_text"] or None, "url": r["url"],
-            "is_tech": bool(r["is_tech"]), "source": r["source"],
+            "category": r.get("category") or categorize(r["title"]), "source": r["source"],
             "first_seen_at": r["first_seen_at"], "active": bool(r["active"]),
             "new": new_run is not None and r["first_seen_run"] == new_run,
         })
@@ -71,76 +71,292 @@ def to_csv(rows: list[dict], new_run: int | None = None) -> str:
     return buf.getvalue()
 
 
-def to_html(rows: list[dict], new_run: int | None = None, generated_at: str = "", companies: int = 0) -> str:
+def to_html(rows: list[dict], new_run: int | None = None, generated_at: str = "") -> str:
+    """One static file: the postings are embedded as JSON and a small script does
+    the searching, filtering and sorting in the browser. No dependencies."""
     pub = public_rows(rows, new_run)
-    body = []
-    for r in pub:
-        badge = '<span class="new">NEW</span> ' if r["new"] else ""
-        posted = r["posted_at"] or r["posted_text"] or "—"
-        body.append(
-            f'<tr data-tech="{int(r["is_tech"])}" data-new="{int(r["new"])}">'
-            f"<td>{html.escape(r['company'])}</td>"
-            f"<td>{badge}{html.escape(r['title'])}</td>"
-            f"<td>{html.escape(r['location'])}</td>"
-            f'<td class="d">{html.escape(posted)}</td>'
-            f'<td><a href="{html.escape(r["url"], quote=True)}" target="_blank" rel="noopener">Apply ↗</a></td></tr>')
-    new_count = sum(r["new"] for r in pub)
-    return PAGE.format(rows="\n".join(body), total=len(pub), new=new_count,
-                       generated=html.escape(generated_at), companies=companies)
+    compact = [{"c": r["company"], "t": r["title"], "l": r["location"], "p": r["posted_at"],
+                "pt": r["posted_text"], "u": r["url"], "k": r["category"], "n": r["new"]} for r in pub]
+    meta = {
+        "generated": generated_at,
+        "dataDate": (generated_at or "")[:10],
+        "hasPreviousRun": new_run is not None,
+        "companies": sorted(Counter(r["company"] for r in pub).items(), key=lambda kv: kv[0].lower()),
+        "categories": [[c, sum(r["category"] == c for r in pub)] for c in CATEGORIES],
+    }
+    # "</" inside a <script> block would end it early; JSON allows "<\/" as an escape.
+    blob = json.dumps({"meta": meta, "rows": compact}, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
+    return PAGE.replace("__DATA__", blob)
 
 
-PAGE = """<!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8">
+PAGE = r"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>intern-radar: internship openings</title>
+<title>Internship openings · intern-radar</title>
 <style>
-  :root {{ color-scheme: light dark; --line: #8884; --muted: #888; --accent: #2f6fdf; }}
-  body {{ font: 14px/1.45 system-ui, -apple-system, sans-serif; margin: 2rem auto; max-width: 1200px; padding: 0 1rem; }}
-  h1 {{ font-size: 1.4rem; margin: 0 0 .25rem; }}
-  p.meta {{ color: var(--muted); margin: 0 0 1rem; }}
-  .controls {{ display: flex; gap: .75rem; flex-wrap: wrap; align-items: center; margin-bottom: 1rem; }}
-  input[type=search] {{ flex: 1; min-width: 220px; padding: .45rem .6rem; border: 1px solid var(--line); border-radius: 6px; font: inherit; }}
-  table {{ width: 100%; border-collapse: collapse; }}
-  th, td {{ text-align: left; padding: .45rem .5rem; border-bottom: 1px solid var(--line); vertical-align: top; }}
-  th {{ cursor: pointer; user-select: none; white-space: nowrap; position: sticky; top: 0; background: Canvas; }}
-  td.d {{ white-space: nowrap; font-variant-numeric: tabular-nums; }}
-  a {{ color: var(--accent); white-space: nowrap; }}
-  .new {{ background: #1f9d55; color: #fff; border-radius: 4px; padding: 0 .35rem; font-size: .75rem; font-weight: 600; }}
-  #count {{ color: var(--muted); }}
-</style></head>
+  :root {
+    --bg: #ffffff; --fg: #1d1d1f; --muted: #6e6e73; --line: #e5e5ea; --soft: #f5f5f7;
+    --accent: #0a66c2; --accent-soft: #e8f1fb; --new: #1a7f37; --new-soft: #dafbe1;
+    --sw: #0a66c2; --data: #8250df; --hw: #bc4c00; --other: #6e6e73;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #111113; --fg: #ececf1; --muted: #9a9aa3; --line: #2a2a2f; --soft: #1b1b1f;
+      --accent: #4c9aff; --accent-soft: #14263d; --new: #3fb950; --new-soft: #12301b;
+      --sw: #4c9aff; --data: #b392f0; --hw: #f0883e; --other: #9a9aa3;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--fg);
+         font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  .wrap { max-width: 1240px; margin: 0 auto; padding: 32px 20px 64px; }
+  header h1 { font-size: 24px; font-weight: 650; letter-spacing: -0.01em; margin: 0 0 4px; }
+  header p { margin: 0; color: var(--muted); }
+  header a { color: var(--accent); text-decoration: none; }
+
+  .controls { position: sticky; top: 0; z-index: 2; background: var(--bg); padding: 16px 0 12px;
+              border-bottom: 1px solid var(--line); margin-top: 20px; }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .row + .row { margin-top: 10px; }
+  .search { flex: 1 1 320px; position: relative; }
+  .search input { width: 100%; padding: 10px 12px 10px 36px; font: inherit; color: var(--fg);
+                  background: var(--soft); border: 1px solid var(--line); border-radius: 10px; outline: none; }
+  .search input:focus { border-color: var(--accent); background: var(--bg); }
+  .search svg { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--muted); }
+  .search kbd { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font: 12px ui-monospace, monospace;
+                color: var(--muted); border: 1px solid var(--line); border-radius: 5px; padding: 0 5px; }
+  select { font: inherit; color: var(--fg); background: var(--soft); border: 1px solid var(--line);
+           border-radius: 10px; padding: 9px 10px; max-width: 220px; }
+  .chip { font: inherit; font-size: 13px; color: var(--fg); background: var(--soft); border: 1px solid var(--line);
+          border-radius: 999px; padding: 5px 12px; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; }
+  .chip .dot { width: 8px; height: 8px; border-radius: 50%; }
+  .chip .count { color: var(--muted); font-variant-numeric: tabular-nums; }
+  .chip[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+  .toggle { display: inline-flex; gap: 6px; align-items: center; color: var(--muted); cursor: pointer; user-select: none; }
+  .spacer { flex: 1; }
+  .summary { color: var(--muted); font-variant-numeric: tabular-nums; }
+  button.link { font: inherit; background: none; border: 0; color: var(--accent); cursor: pointer; padding: 0; }
+
+  table { width: 100%; border-collapse: collapse; margin-top: 4px; }
+  th { text-align: left; font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase;
+       letter-spacing: .04em; padding: 12px 10px 8px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  th.sortable { cursor: pointer; user-select: none; }
+  th.sortable:hover { color: var(--fg); }
+  th .arrow { display: inline-block; width: 1em; color: var(--accent); }
+  td { padding: 11px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tbody tr:hover { background: var(--soft); }
+  td.company { font-weight: 600; white-space: nowrap; }
+  td.role .title { font-weight: 500; }
+  td.role .tags { margin-top: 3px; display: flex; gap: 6px; flex-wrap: wrap; }
+  .tag { font-size: 11.5px; font-weight: 600; padding: 1px 7px; border-radius: 999px; border: 1px solid currentColor; opacity: .9; }
+  .tag.new { color: var(--new); background: var(--new-soft); border-color: transparent; }
+  td.loc { color: var(--muted); max-width: 300px; }
+  td.posted { white-space: nowrap; font-variant-numeric: tabular-nums; color: var(--muted); }
+  td.apply a { display: inline-block; white-space: nowrap; color: var(--accent); text-decoration: none; font-weight: 600;
+               border: 1px solid var(--line); border-radius: 8px; padding: 4px 10px; }
+  td.apply a:hover { border-color: var(--accent); background: var(--accent-soft); }
+  mark { background: #fff2a8; color: inherit; border-radius: 2px; }
+  @media (prefers-color-scheme: dark) { mark { background: #5c4a00; } }
+  .empty { text-align: center; color: var(--muted); padding: 48px 0; }
+  footer { margin-top: 28px; color: var(--muted); font-size: 12.5px; }
+  @media (max-width: 760px) {
+    th.h-loc, td.loc { display: none; }
+    td.company { white-space: normal; }
+  }
+</style>
+</head>
 <body>
-<h1>Internship openings</h1>
-<p class="meta">{total} open internships from {companies} companies · {new} new since the previous run · generated {generated} by
-<a href="https://github.com/2006-sk/intern-radar">intern-radar</a>, fetched through String Web Access.</p>
-<div class="controls">
-  <input type="search" id="q" placeholder="Filter by company, role or location (e.g. software, london, stripe)">
-  <label><input type="checkbox" id="tech"> Technical roles only</label>
-  <label><input type="checkbox" id="onlynew"> New only</label>
-  <span id="count"></span>
+<div class="wrap">
+  <header>
+    <h1>Internship openings</h1>
+    <p id="headline"></p>
+  </header>
+
+  <div class="controls">
+    <div class="row">
+      <label class="search">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5.25" stroke="currentColor" stroke-width="1.5"/><path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <input id="q" type="search" autocomplete="off" spellcheck="false"
+               placeholder='Search words: software london   ·   "machine learning"   ·   -phd to exclude'
+               aria-label="Search by words in company, role or location">
+        <kbd>/</kbd>
+      </label>
+      <select id="company" aria-label="Company"></select>
+      <select id="posted" aria-label="Posted">
+        <option value="">Posted: any time</option>
+        <option value="7">Posted: last 7 days</option>
+        <option value="30">Posted: last 30 days</option>
+        <option value="90">Posted: last 90 days</option>
+      </select>
+    </div>
+    <div class="row">
+      <div id="cats" class="row" style="margin:0"></div>
+      <label class="toggle" id="newWrap"><input type="checkbox" id="onlyNew"> New since last run</label>
+      <span class="spacer"></span>
+      <span class="summary" id="summary"></span>
+      <button class="link" id="reset" type="button">Reset</button>
+    </div>
+  </div>
+
+  <table>
+    <thead><tr>
+      <th class="sortable" data-key="c">Company <span class="arrow"></span></th>
+      <th class="sortable" data-key="t">Role <span class="arrow"></span></th>
+      <th class="sortable h-loc" data-key="l">Location <span class="arrow"></span></th>
+      <th class="sortable" data-key="p">Posted <span class="arrow"></span></th>
+      <th></th>
+    </tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+  <div class="empty" id="empty" hidden>No internships match these filters. <button class="link" id="reset2" type="button">Clear filters</button></div>
+
+  <footer>
+    Built with <a href="https://github.com/2006-sk/Stringinterview">intern-radar</a>. Data fetched read-only through
+    String Web Access from each company's public careers site. Always check the posting on the company's own site before applying.
+  </footer>
 </div>
-<table id="t"><thead><tr><th>Company</th><th>Role</th><th>Location</th><th>Posted</th><th>Link</th></tr></thead>
-<tbody>
-{rows}
-</tbody></table>
+
+<script id="data" type="application/json">__DATA__</script>
 <script>
-const rows = [...document.querySelectorAll('#t tbody tr')];
-const q = document.getElementById('q'), tech = document.getElementById('tech'), onlynew = document.getElementById('onlynew');
-function apply() {{
-  const terms = q.value.toLowerCase().split(/\\s+/).filter(Boolean); let n = 0;
-  for (const r of rows) {{
-    const text = r.textContent.toLowerCase();
-    const show = terms.every(t => text.includes(t)) && (!tech.checked || r.dataset.tech === '1') && (!onlynew.checked || r.dataset.new === '1');
-    r.hidden = !show; n += show;
-  }}
-  document.getElementById('count').textContent = n + ' shown';
-}}
-[q, tech, onlynew].forEach(el => el.addEventListener('input', apply));
-document.querySelectorAll('#t th').forEach((th, i) => th.addEventListener('click', () => {{
-  const dir = th.dataset.dir = th.dataset.dir === 'asc' ? 'desc' : 'asc';
-  rows.sort((a, b) => a.cells[i].textContent.localeCompare(b.cells[i].textContent) * (dir === 'asc' ? 1 : -1));
-  rows.forEach(r => r.parentNode.appendChild(r));
-}}));
-apply();
+(() => {
+  const { meta, rows } = JSON.parse(document.getElementById('data').textContent);
+  const $ = (id) => document.getElementById(id);
+  const CAT_COLORS = { 'Software': 'var(--sw)', 'Data & Research': 'var(--data)',
+                       'Hardware & Engineering': 'var(--hw)', 'Business & Other': 'var(--other)' };
+  const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  rows.forEach((r) => { r.hay = (r.c + ' ' + r.t + ' ' + r.l).toLowerCase(); });
+
+  // ---- state (mirrored in the URL so a filtered view can be shared) ----
+  const state = { q: '', company: '', posted: '', cats: new Set(), onlyNew: false, sort: 'p', dir: -1 };
+  const params = new URLSearchParams(location.search);
+  state.q = params.get('q') || '';
+  state.company = params.get('company') || '';
+  state.posted = params.get('posted') || '';
+  (params.get('cat') || '').split(',').filter(Boolean).forEach((c) => state.cats.add(c));
+  state.onlyNew = params.get('new') === '1';
+  if (params.get('sort')) { state.sort = params.get('sort'); state.dir = params.get('dir') === 'asc' ? 1 : -1; }
+
+  function syncUrl() {
+    const p = new URLSearchParams();
+    if (state.q) p.set('q', state.q);
+    if (state.company) p.set('company', state.company);
+    if (state.posted) p.set('posted', state.posted);
+    if (state.cats.size) p.set('cat', [...state.cats].join(','));
+    if (state.onlyNew) p.set('new', '1');
+    if (state.sort !== 'p' || state.dir !== -1) { p.set('sort', state.sort); p.set('dir', state.dir === 1 ? 'asc' : 'desc'); }
+    const qs = p.toString();
+    history.replaceState(null, '', qs ? '?' + qs : location.pathname);
+  }
+
+  // ---- word search: every word must match; "quoted phrases" and -excluded words ----
+  function parseQuery(q) {
+    const include = [], exclude = [];
+    for (const m of q.toLowerCase().matchAll(/(-?)"([^"]+)"|(-?)(\S+)/g)) {
+      const neg = m[1] || m[3], term = (m[2] || m[4] || '').trim();
+      if (!term || term === '-') continue;
+      (neg ? exclude : include).push(term);
+    }
+    return { include, exclude };
+  }
+  function highlight(text, terms) {
+    text = String(text ?? '');
+    if (!terms.length) return esc(text);
+    // Split the raw text on the search terms (odd pieces are matches), then escape each piece.
+    const re = new RegExp('(' + terms.map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')', 'ig');
+    return text.split(re).map((part, i) => (i % 2 ? '<mark>' + esc(part) + '</mark>' : esc(part))).join('');
+  }
+
+  // ---- controls ----
+  $('headline').innerHTML =
+    `<strong>${rows.length}</strong> open internships from <strong>${meta.companies.length}</strong> companies` +
+    (meta.hasPreviousRun ? ` · <strong>${rows.filter((r) => r.n).length}</strong> new since the previous run` : '') +
+    (meta.generated ? ` · updated ${esc(meta.generated.replace('T', ' ').replace('+00:00', ' UTC'))}` : '');
+
+  $('company').innerHTML = `<option value="">All companies (${meta.companies.length})</option>` +
+    meta.companies.map(([c, n]) => `<option value="${esc(c)}">${esc(c)} (${n})</option>`).join('');
+
+  $('cats').innerHTML = meta.categories.map(([c, n]) =>
+    `<button type="button" class="chip" data-cat="${esc(c)}" aria-pressed="false">` +
+    `<span class="dot" style="background:${CAT_COLORS[c]}"></span>${esc(c)} <span class="count">${n}</span></button>`).join('');
+
+  if (!meta.hasPreviousRun) $('newWrap').hidden = true;
+
+  function setControls() {
+    $('q').value = state.q; $('company').value = state.company; $('posted').value = state.posted;
+    $('onlyNew').checked = state.onlyNew;
+    document.querySelectorAll('.chip').forEach((b) => b.setAttribute('aria-pressed', state.cats.has(b.dataset.cat)));
+    document.querySelectorAll('th.sortable').forEach((th) => {
+      th.querySelector('.arrow').textContent = th.dataset.key === state.sort ? (state.dir === 1 ? '↑' : '↓') : '';
+      th.setAttribute('aria-sort', th.dataset.key === state.sort ? (state.dir === 1 ? 'ascending' : 'descending') : 'none');
+    });
+  }
+
+  // ---- filter + sort + render ----
+  function cutoff(days) {
+    if (!days) return null;
+    const d = meta.dataDate ? new Date(meta.dataDate + 'T00:00:00Z') : new Date();
+    d.setUTCDate(d.getUTCDate() - Number(days));
+    return d.toISOString().slice(0, 10);
+  }
+  function render() {
+    const { include, exclude } = parseQuery(state.q);
+    const since = cutoff(state.posted);
+    const list = rows.filter((r) =>
+      include.every((t) => r.hay.includes(t)) && !exclude.some((t) => r.hay.includes(t)) &&
+      (!state.company || r.c === state.company) &&
+      (!state.cats.size || state.cats.has(r.k)) &&
+      (!since || (r.p && r.p >= since)) &&
+      (!state.onlyNew || r.n));
+    const k = state.sort, dir = state.dir;
+    list.sort((a, b) => {
+      const x = a[k] || '', y = b[k] || '';
+      if (!x !== !y) return x ? -1 : 1;             // empty values always last
+      const c = k === 'p' ? (x < y ? -1 : x > y ? 1 : 0) : x.localeCompare(y, undefined, { sensitivity: 'base' });
+      return c * dir || a.c.localeCompare(b.c) || a.t.localeCompare(b.t);
+    });
+    $('rows').innerHTML = list.map((r) => `<tr>
+      <td class="company">${highlight(r.c, include)}</td>
+      <td class="role"><div class="title">${highlight(r.t, include)}</div><div class="tags">` +
+        (r.n ? '<span class="tag new">NEW</span>' : '') +
+        `<span class="tag" style="color:${CAT_COLORS[r.k]}">${esc(r.k)}</span></div></td>
+      <td class="loc">${highlight(r.l || '—', include)}</td>
+      <td class="posted" title="${r.p ? '' : 'The source does not publish an exact date'}">${esc(r.p || r.pt || '—')}</td>
+      <td class="apply"><a href="${esc(r.u)}" target="_blank" rel="noopener noreferrer">Apply ↗</a></td>
+    </tr>`).join('');
+    $('empty').hidden = list.length > 0;
+    $('summary').textContent = list.length === rows.length ? `${rows.length} roles` : `${list.length} of ${rows.length} roles`;
+    setControls();
+    syncUrl();
+  }
+
+  // ---- events ----
+  let timer;
+  $('q').addEventListener('input', (e) => { clearTimeout(timer); timer = setTimeout(() => { state.q = e.target.value; render(); }, 80); });
+  $('company').addEventListener('change', (e) => { state.company = e.target.value; render(); });
+  $('posted').addEventListener('change', (e) => { state.posted = e.target.value; render(); });
+  $('onlyNew').addEventListener('change', (e) => { state.onlyNew = e.target.checked; render(); });
+  $('cats').addEventListener('click', (e) => {
+    const b = e.target.closest('.chip'); if (!b) return;
+    state.cats.has(b.dataset.cat) ? state.cats.delete(b.dataset.cat) : state.cats.add(b.dataset.cat);
+    render();
+  });
+  document.querySelectorAll('th.sortable').forEach((th) => th.addEventListener('click', () => {
+    if (state.sort === th.dataset.key) state.dir = -state.dir;
+    else { state.sort = th.dataset.key; state.dir = th.dataset.key === 'p' ? -1 : 1; }
+    render();
+  }));
+  const reset = () => { Object.assign(state, { q: '', company: '', posted: '', onlyNew: false, sort: 'p', dir: -1 }); state.cats.clear(); render(); };
+  $('reset').addEventListener('click', reset);
+  $('reset2').addEventListener('click', reset);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === '/' && document.activeElement !== $('q')) { e.preventDefault(); $('q').focus(); }
+    if (e.key === 'Escape' && document.activeElement === $('q')) { state.q = ''; render(); }
+  });
+  render();
+})();
 </script>
-</body></html>
+</body>
+</html>
 """

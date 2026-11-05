@@ -1,0 +1,35 @@
+[
+ {
+  "id": 8632723002,
+  "position": "Cybersecurity Engineer",
+  "category": "Cybersecurity",
+  "availability": "Summer Internship",
+  "city": "NYC",
+  "team": "Cybersecurity",
+  "duration": "May-August",
+  "min_salary": "300,000",
+  "max_salary": "300,000"
+ },
+ {
+  "id": 8810604002,
+  "position": "Cybersecurity Engineer",
+  "category": "Cybersecurity",
+  "availability": "Summer Internship",
+  "city": "HKG",
+  "team": "Cybersecurity",
+  "duration": "May-August",
+  "min_salary": null,
+  "max_salary": null
+ },
+ {
+  "id": 8631912002,
+  "position": "Accounting Coordinator",
+  "category": "Finance and Operations",
+  "availability": "Full-Time: Experienced",
+  "city": "NYC",
+  "team": "Accounting",
+  "duration": "Permanent",
+  "min_salary": "100,000",
+  "max_salary": "120,000"
+ }
+]

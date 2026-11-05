@@ -1,0 +1,87 @@
+[
+ {
+  "categories": {
+   "commitment": "Internship",
+   "location": "Paris, France",
+   "team": "Echo",
+   "allLocations": [
+    "Paris, France"
+   ]
+  },
+  "createdAt": 1778517108152,
+  "id": "774cf5c9-bf6a-4d77-bf60-d50ef1beb1a0",
+  "text": "Deployment Strategist, Internship",
+  "country": "FR",
+  "workplaceType": "onsite",
+  "hostedUrl": "https://jobs.lever.co/palantir/774cf5c9-bf6a-4d77-bf60-d50ef1beb1a0",
+  "applyUrl": "https://jobs.lever.co/palantir/774cf5c9-bf6a-4d77-bf60-d50ef1beb1a0/apply"
+ },
+ {
+  "categories": {
+   "commitment": "Internship",
+   "location": "Honolulu, HI",
+   "team": "Echo",
+   "allLocations": [
+    "Honolulu, HI"
+   ]
+  },
+  "createdAt": 1765492275446,
+  "id": "a49d4181-a289-435a-b581-7f5af0497c8e",
+  "text": "Deployment Strategist, Internship - US Government",
+  "country": "US",
+  "workplaceType": "onsite",
+  "hostedUrl": "https://jobs.lever.co/palantir/a49d4181-a289-435a-b581-7f5af0497c8e",
+  "applyUrl": "https://jobs.lever.co/palantir/a49d4181-a289-435a-b581-7f5af0497c8e/apply"
+ },
+ {
+  "categories": {
+   "commitment": "Internship",
+   "location": "New York, NY",
+   "team": "Business Development",
+   "allLocations": [
+    "New York, NY"
+   ]
+  },
+  "createdAt": 1744203908597,
+  "id": "7fa0ceca-c30e-48de-9b27-f98469c374f3",
+  "text": "Meritocracy Fellowship",
+  "country": "US",
+  "workplaceType": "onsite",
+  "hostedUrl": "https://jobs.lever.co/palantir/7fa0ceca-c30e-48de-9b27-f98469c374f3",
+  "applyUrl": "https://jobs.lever.co/palantir/7fa0ceca-c30e-48de-9b27-f98469c374f3/apply"
+ },
+ {
+  "categories": {
+   "commitment": "Full-time",
+   "location": "Singapore, Singapore",
+   "team": "Administrative",
+   "allLocations": [
+    "Singapore, Singapore"
+   ]
+  },
+  "createdAt": 1786469891368,
+  "id": "6ed76ce8-4156-4b60-b120-403538bd66cd",
+  "text": "Administrative Business Partner",
+  "country": "SG",
+  "workplaceType": "hybrid",
+  "hostedUrl": "https://jobs.lever.co/palantir/6ed76ce8-4156-4b60-b120-403538bd66cd",
+  "applyUrl": "https://jobs.lever.co/palantir/6ed76ce8-4156-4b60-b120-403538bd66cd/apply"
+ },
+ {
+  "categories": {
+   "commitment": "Scholarship",
+   "location": "North America",
+   "team": "Business Development",
+   "allLocations": [
+    "North America"
+   ]
+  },
+  "createdAt": 1750119374985,
+  "id": "0ccbe620-a3ef-41d1-a5c4-68e56b3c91d0",
+  "text": "American Tech Fellowship",
+  "country": "US",
+  "workplaceType": "remote",
+  "hostedUrl": "https://jobs.lever.co/palantir/0ccbe620-a3ef-41d1-a5c4-68e56b3c91d0",
+  "applyUrl": "https://jobs.lever.co/palantir/0ccbe620-a3ef-41d1-a5c4-68e56b3c91d0/apply"
+ }
+]

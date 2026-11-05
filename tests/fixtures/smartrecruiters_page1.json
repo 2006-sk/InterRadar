@@ -1,0 +1,345 @@
+{
+ "offset": 0,
+ "limit": 100,
+ "totalFound": 150,
+ "content": [
+  {
+   "id": "744000159255618",
+   "name": "Finance Intern - Undergrad Summer 2027",
+   "uuid": "ff4d3aa8-80b9-4efd-baeb-8393ebe23c93",
+   "jobAdId": "4ea70abb-4c5f-444b-be0b-e0f9563bb932",
+   "defaultJobAd": true,
+   "refNumber": "JB0074794",
+   "company": {
+    "identifier": "ServiceNow",
+    "name": "ServiceNow"
+   },
+   "releasedDate": "2026-11-02T22:14:39.727Z",
+   "location": {
+    "city": "Santa Clara",
+    "region": "CALIFORNIA",
+    "country": "us",
+    "address": "Building A,B,C 2225 Lawson Lane",
+    "postalCode": "95054",
+    "remote": false,
+    "hybrid": true,
+    "fullLocation": "Santa Clara, CALIFORNIA, United States"
+   },
+   "industry": {
+    "id": "it_and_services",
+    "label": "Information Technology And Services"
+   },
+   "department": {
+    "id": "2294072",
+    "label": "Finance & Accounting"
+   },
+   "function": {
+    "id": "other",
+    "label": "Other"
+   },
+   "typeOfEmployment": {
+    "id": "intern",
+    "label": "Intern"
+   },
+   "experienceLevel": {
+    "id": "not_applicable",
+    "label": "Not Applicable"
+   },
+   "customField": [
+    {
+     "fieldId": "60345fa28b4ba8595bef1863",
+     "fieldLabel": "Recruiting Team",
+     "valueId": "early-in-career",
+     "valueLabel": "Global Emerging Talent"
+    },
+    {
+     "fieldId": "60345d5c5165a31b17288279",
+     "fieldLabel": "Region",
+     "valueId": "722a833b93e4437798309f43c0d25990",
+     "valueLabel": "AMS - North America and Canada"
+    },
+    {
+     "fieldId": "6034601b43915a29a4b3389b",
+     "fieldLabel": "Job Location",
+     "valueId": "L_SJC005",
+     "valueLabel": "2225 Lawson Lane, Santa Clara, California, 95054, United States of America(L_SJC005)"
+    },
+    {
+     "fieldId": "60345e1a0b24a127cbdfa148",
+     "fieldLabel": "Employee Type",
+     "valueId": "d86e5e3e318f497985a090b7dcdbc8e6",
+     "valueLabel": "Intern (Fixed Term)"
+    },
+    {
+     "fieldId": "5f63a78f1dae5c5c4e54ba2b",
+     "fieldLabel": "Department",
+     "valueId": "2294072",
+     "valueLabel": "Finance & Accounting"
+    },
+    {
+     "fieldId": "COUNTRY",
+     "fieldLabel": "Country/Region",
+     "valueId": "us",
+     "valueLabel": "United States"
+    },
+    {
+     "fieldId": "5f63a78f1dae5c5c4e54ba2a",
+     "fieldLabel": "Brands",
+     "valueId": "default",
+     "valueLabel": "ServiceNow"
+    },
+    {
+     "fieldId": "603462175165a31b1728827d",
+     "fieldLabel": "Cost Center",
+     "valueId": "CC5250",
+     "valueLabel": "5250 Financial Development Program"
+    },
+    {
+     "fieldId": "618ed92b8f5e5f110e5bfb95",
+     "fieldLabel": "Work Persona",
+     "valueId": "bf7551c6-9b06-4e7c-8217-3baf43edd060",
+     "valueLabel": "Flexible"
+    },
+    {
+     "fieldId": "690cc0e8c682c3dbadaa7d73",
+     "fieldLabel": "Job Posting Type",
+     "valueId": "intern",
+     "valueLabel": "Intern"
+    }
+   ],
+   "visibility": "PUBLIC",
+   "ref": "https://api.smartrecruiters.com/v1/companies/ServiceNow/postings/744000159255618",
+   "language": {
+    "code": "en",
+    "label": "English",
+    "labelNative": "English (US)"
+   }
+  },
+  {
+   "id": "744000158475569",
+   "name": "Intern – Business Development Representative (German, Dutch, Arabic OR Nordic Languages)",
+   "uuid": "16e555dc-a3f6-45ee-976b-fe698b508e91",
+   "jobAdId": "21fc0725-b901-40a5-8ef3-ec1f85da22c6",
+   "defaultJobAd": true,
+   "refNumber": "JB0076003",
+   "company": {
+    "identifier": "ServiceNow",
+    "name": "ServiceNow"
+   },
+   "releasedDate": "2026-10-29T09:57:11.026Z",
+   "location": {
+    "city": "Dublin",
+    "country": "ie",
+    "address": "Dawson 60 Dawson Street",
+    "postalCode": "D02 K330",
+    "remote": false,
+    "hybrid": false,
+    "fullLocation": "Dublin, , Ireland"
+   },
+   "industry": {
+    "id": "it_and_services",
+    "label": "Information Technology And Services"
+   },
+   "department": {
+    "id": "2294157",
+    "label": "Marketing, Communications, and Brand"
+   },
+   "function": {
+    "id": "other",
+    "label": "Other"
+   },
+   "typeOfEmployment": {
+    "id": "intern",
+    "label": "Intern"
+   },
+   "experienceLevel": {
+    "id": "not_applicable",
+    "label": "Not Applicable"
+   },
+   "customField": [
+    {
+     "fieldId": "60345fa28b4ba8595bef1863",
+     "fieldLabel": "Recruiting Team",
+     "valueId": "early-in-career",
+     "valueLabel": "Global Emerging Talent"
+    },
+    {
+     "fieldId": "60345d5c5165a31b17288279",
+     "fieldLabel": "Region",
+     "valueId": "395ee3093de740ba9cb8b3d35cb67e2d",
+     "valueLabel": "EMEA - Europe, Middle East and Africa"
+    },
+    {
+     "fieldId": "6034601b43915a29a4b3389b",
+     "fieldLabel": "Job Location",
+     "valueId": "L_DUB007",
+     "valueLabel": "60 Dawson Street, Dublin, D02 K330, Ireland(L_DUB007)"
+    },
+    {
+     "fieldId": "60345e1a0b24a127cbdfa148",
+     "fieldLabel": "Employee Type",
+     "valueId": "d86e5e3e318f497985a090b7dcdbc8e6",
+     "valueLabel": "Intern (Fixed Term)"
+    },
+    {
+     "fieldId": "5f63a78f1dae5c5c4e54ba2b",
+     "fieldLabel": "Department",
+     "valueId": "2294157",
+     "valueLabel": "Marketing, Communications, and Brand"
+    },
+    {
+     "fieldId": "COUNTRY",
+     "fieldLabel": "Country/Region",
+     "valueId": "ie",
+     "valueLabel": "Ireland"
+    },
+    {
+     "fieldId": "5f63a78f1dae5c5c4e54ba2a",
+     "fieldLabel": "Brands",
+     "valueId": "default",
+     "valueLabel": "ServiceNow"
+    },
+    {
+     "fieldId": "603462175165a31b1728827d",
+     "fieldLabel": "Cost Center",
+     "valueId": "CC3101",
+     "valueLabel": "3101 Global Sales Development LDRs"
+    },
+    {
+     "fieldId": "618ed92b8f5e5f110e5bfb95",
+     "fieldLabel": "Work Persona",
+     "valueId": "bf7551c6-9b06-4e7c-8217-3baf43edd060",
+     "valueLabel": "Flexible"
+    },
+    {
+     "fieldId": "690cc0e8c682c3dbadaa7d73",
+     "fieldLabel": "Job Posting Type",
+     "valueId": "intern",
+     "valueLabel": "Intern"
+    }
+   ],
+   "visibility": "PUBLIC",
+   "ref": "https://api.smartrecruiters.com/v1/companies/ServiceNow/postings/744000158475569",
+   "creator": {
+    "name": "Priya Pitrola"
+   },
+   "language": {
+    "code": "en",
+    "label": "English",
+    "labelNative": "English (US)"
+   }
+  },
+  {
+   "id": "744000159949079",
+   "name": "Staff Database Engineer",
+   "uuid": "b7863b09-4787-4520-8b14-c24aa63af213",
+   "jobAdId": "bfeb3d82-1097-4dd1-b0f7-684d825fe15f",
+   "defaultJobAd": true,
+   "refNumber": "JB0076797",
+   "company": {
+    "identifier": "ServiceNow",
+    "name": "ServiceNow"
+   },
+   "releasedDate": "2026-11-05T18:33:17.862Z",
+   "location": {
+    "city": "Santa Clara",
+    "region": "CALIFORNIA",
+    "country": "us",
+    "address": "Building A,B,C 2225 Lawson Lane",
+    "postalCode": "95054",
+    "remote": false,
+    "hybrid": true,
+    "fullLocation": "Santa Clara, CALIFORNIA, United States"
+   },
+   "industry": {
+    "id": "it_and_services",
+    "label": "Information Technology And Services"
+   },
+   "department": {
+    "id": "2294038",
+    "label": "Engineering, Infrastructure and Operations"
+   },
+   "function": {
+    "id": "information_technology",
+    "label": "Information Technology"
+   },
+   "typeOfEmployment": {
+    "id": "permanent",
+    "label": "Full-time"
+   },
+   "experienceLevel": {
+    "id": "not_applicable",
+    "label": "Not Applicable"
+   },
+   "customField": [
+    {
+     "fieldId": "60345fa28b4ba8595bef1863",
+     "fieldLabel": "Recruiting Team",
+     "valueId": "professional",
+     "valueLabel": "Professional"
+    },
+    {
+     "fieldId": "60345d5c5165a31b17288279",
+     "fieldLabel": "Region",
+     "valueId": "722a833b93e4437798309f43c0d25990",
+     "valueLabel": "AMS - North America and Canada"
+    },
+    {
+     "fieldId": "6034601b43915a29a4b3389b",
+     "fieldLabel": "Job Location",
+     "valueId": "L_SJC005",
+     "valueLabel": "2225 Lawson Lane, Santa Clara, California, 95054, United States of America(L_SJC005)"
+    },
+    {
+     "fieldId": "60345e1a0b24a127cbdfa148",
+     "fieldLabel": "Employee Type",
+     "valueId": "0082f6cbe6154da19322cbab1f6aa5af",
+     "valueLabel": "Regular"
+    },
+    {
+     "fieldId": "5f63a78f1dae5c5c4e54ba2b",
+     "fieldLabel": "Department",
+     "valueId": "2294038",
+     "valueLabel": "Engineering, Infrastructure and Operations"
+    },
+    {
+     "fieldId": "COUNTRY",
+     "fieldLabel": "Country/Region",
+     "valueId": "us",
+     "valueLabel": "United States"
+    },
+    {
+     "fieldId": "5f63a78f1dae5c5c4e54ba2a",
+     "fieldLabel": "Brands",
+     "valueId": "default",
+     "valueLabel": "ServiceNow"
+    },
+    {
+     "fieldId": "603462175165a31b1728827d",
+     "fieldLabel": "Cost Center",
+     "valueId": "CC1500",
+     "valueLabel": "1500 GCS Cloud Operations"
+    },
+    {
+     "fieldId": "618ed92b8f5e5f110e5bfb95",
+     "fieldLabel": "Work Persona",
+     "valueId": "5530c877-6b63-4bf5-bde8-215ef35bf172",
+     "valueLabel": "Flexible or Remote"
+    },
+    {
+     "fieldId": "690cc0e8c682c3dbadaa7d73",
+     "fieldLabel": "Job Posting Type",
+     "valueId": "professional",
+     "valueLabel": "Professional"
+    }
+   ],
+   "visibility": "PUBLIC",
+   "ref": "https://api.smartrecruiters.com/v1/companies/ServiceNow/postings/744000159949079",
+   "language": {
+    "code": "en",
+    "label": "English",
+    "labelNative": "English (US)"
+   }
+  }
+ ]
+}

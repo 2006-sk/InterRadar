@@ -26,7 +26,7 @@ def main(argv: list[str] | None = None) -> int:
     conn = db.connect(args.db)
     try:
         return args.func(args, conn)
-    except FetchError as e:
+    except (FetchError, ValueError) as e:
         print(f"error: {e}", file=sys.stderr)
         return 2
     finally:
@@ -56,7 +56,10 @@ def build_parser() -> argparse.ArgumentParser:
         lp.add_argument("--company", action="append", metavar="ID", help="company id or name (repeatable)")
         lp.add_argument("--search", "-s", help="text in the role title, e.g. 'software'")
         lp.add_argument("--location", "-l", help="text in the location, e.g. 'new york' or 'remote'")
-        lp.add_argument("--tech", action="store_true", help="technical roles only (software, data, research, hardware...)")
+        lp.add_argument("--tech", action="store_true",
+                        help="technical roles only (Software, Data & Research, Hardware & Engineering)")
+        lp.add_argument("--category", "-c", action="append", metavar="NAME",
+                        help="software | data | hardware | other (repeatable)")
         lp.add_argument("--since", metavar="YYYY-MM-DD", help="posted on or after this date")
         lp.add_argument("--sort", choices=["posted", "company", "title"], default="posted")
         lp.add_argument("--limit", type=int)
@@ -121,7 +124,7 @@ def cmd_scrape(args, conn) -> int:
 
 def _filters(args) -> dict:
     return dict(company=args.company, search=args.search, location=args.location, tech=args.tech,
-                since=args.since, sort=args.sort, limit=args.limit)
+                category=args.category, since=args.since, sort=args.sort, limit=args.limit)
 
 
 def _output(args, conn, rows, new_run) -> None:
@@ -133,8 +136,7 @@ def _output(args, conn, rows, new_run) -> None:
         text = render.to_csv(rows, new_run)
     else:
         latest = db.latest_run(conn)
-        n_companies = conn.execute("SELECT count(DISTINCT company_id) FROM postings WHERE active = 1").fetchone()[0]
-        text = render.to_html(rows, new_run, generated_at=(latest["finished_at"] if latest else ""), companies=n_companies)
+        text = render.to_html(rows, new_run, generated_at=(latest["finished_at"] if latest else ""))
     if args.out:
         Path(args.out).parent.mkdir(parents=True, exist_ok=True)
         Path(args.out).write_text(text if text.endswith("\n") else text + "\n")

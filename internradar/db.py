@@ -12,7 +12,7 @@ import sqlite3
 from datetime import datetime, timezone
 from pathlib import Path
 
-from .models import Posting
+from .models import CATEGORIES, OTHER, Posting, categorize
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS runs (
@@ -38,7 +38,6 @@ CREATE TABLE IF NOT EXISTS postings (
     url            TEXT NOT NULL,
     posted_at      TEXT,
     posted_text    TEXT NOT NULL DEFAULT '',
-    is_tech        INTEGER NOT NULL DEFAULT 0,
     first_seen_run INTEGER NOT NULL REFERENCES runs(id),
     last_seen_run  INTEGER NOT NULL REFERENCES runs(id),
     first_seen_at  TEXT NOT NULL,
@@ -71,6 +70,10 @@ def connect(path: str | Path) -> sqlite3.Connection:
     conn = sqlite3.connect(str(path))
     conn.row_factory = sqlite3.Row
     conn.executescript(SCHEMA)
+    # v0.1 stored an is_tech flag; categories are now derived from the title.
+    if "is_tech" in {r["name"] for r in conn.execute("PRAGMA table_info(postings)")}:
+        conn.execute("ALTER TABLE postings DROP COLUMN is_tech")
+        conn.commit()
     return conn
 
 
@@ -98,17 +101,17 @@ def save_company(conn: sqlite3.Connection, run_id: int, company_id: str,
         if exists:
             conn.execute(
                 """UPDATE postings SET title = ?, location = ?, url = ?, posted_at = ?, posted_text = ?,
-                   is_tech = ?, last_seen_run = ?, last_seen_at = ?, active = 1, closed_run = NULL
+                   last_seen_run = ?, last_seen_at = ?, active = 1, closed_run = NULL
                    WHERE key = ?""",
-                (p.title, p.location, p.url, p.posted_at, p.posted_text, int(p.is_tech), run_id, ts, p.key))
+                (p.title, p.location, p.url, p.posted_at, p.posted_text, run_id, ts, p.key))
         else:
             new += 1
             conn.execute(
                 """INSERT INTO postings (key, company_id, company, source, source_id, title, location, url,
-                   posted_at, posted_text, is_tech, first_seen_run, last_seen_run, first_seen_at, last_seen_at)
-                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                   posted_at, posted_text, first_seen_run, last_seen_run, first_seen_at, last_seen_at)
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
                 (p.key, p.company_id, p.company, p.source, p.source_id, p.title, p.location, p.url,
-                 p.posted_at, p.posted_text, int(p.is_tech), run_id, run_id, ts, ts))
+                 p.posted_at, p.posted_text, run_id, run_id, ts, ts))
     closed = conn.execute(
         """UPDATE postings SET active = 0, closed_run = ?
            WHERE company_id = ? AND active = 1 AND last_seen_run < ?""",
@@ -132,9 +135,12 @@ def latest_run(conn: sqlite3.Connection) -> sqlite3.Row | None:
 
 
 def query_postings(conn: sqlite3.Connection, *, company: list[str] | None = None, search: str | None = None,
-                   location: str | None = None, tech: bool = False, since: str | None = None,
+                   location: str | None = None, tech: bool = False, category: list[str] | None = None,
+                   since: str | None = None,
                    first_seen_run: int | None = None, closed_run: int | None = None,
                    include_closed: bool = False, sort: str = "posted", limit: int | None = None) -> list[dict]:
+    """Postings matching the filters. Every requisition id is its own row: the same
+    title in the same city under two req ids is two roles, not a duplicate."""
     where, args = [], []
     if closed_run is not None:
         where.append("closed_run = ?")
@@ -150,8 +156,6 @@ def query_postings(conn: sqlite3.Connection, *, company: list[str] | None = None
     if location:
         where.append("lower(location) LIKE ?")
         args.append(f"%{location.lower()}%")
-    if tech:
-        where.append("is_tech = 1")
     if since:
         where.append("posted_at >= ?")
         args.append(since)
@@ -164,6 +168,22 @@ def query_postings(conn: sqlite3.Connection, *, company: list[str] | None = None
         "title": "title, company",
     }[sort]
     sql = f"SELECT * FROM postings {'WHERE ' + ' AND '.join(where) if where else ''} ORDER BY {order}"
-    if limit:
-        sql += f" LIMIT {int(limit)}"
-    return [dict(r) for r in conn.execute(sql, args)]
+    rows = []
+    wanted = {resolve_category(c) for c in category or []}
+    for r in conn.execute(sql, args):
+        row = dict(r)
+        row["category"] = categorize(row["title"])
+        if tech and row["category"] == OTHER:
+            continue
+        if wanted and row["category"] not in wanted:
+            continue
+        rows.append(row)
+    return rows[:limit] if limit else rows
+
+
+def resolve_category(name: str) -> str:
+    """Accept 'software', 'data', 'hardware', 'other' or a full category name."""
+    for c in CATEGORIES:
+        if c.lower() == name.lower() or c.lower().split()[0] == name.lower():
+            return c
+    raise ValueError(f"unknown category {name!r}; choose from: software, data, hardware, other")

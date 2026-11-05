@@ -1,0 +1,103 @@
+{
+ "jobs": [
+  {
+   "absolute_url": "https://stripe.com/jobs/search?gh_jid=8194291",
+   "education": "education_required",
+   "internal_job_id": 3545647,
+   "location": {
+    "name": "New York, Seattle, South San Francisco HQ"
+   },
+   "id": 8194291,
+   "updated_at": "2026-10-29T10:42:09-04:00",
+   "requisition_id": "See Opening ID",
+   "title": "Data Analyst, Intern",
+   "company_name": "Stripe",
+   "first_published": "2026-10-01T11:05:29-04:00",
+   "language": "en",
+   "application_deadline": null
+  },
+  {
+   "absolute_url": "https://stripe.com/jobs/search?gh_jid=8194287",
+   "education": "education_required",
+   "internal_job_id": 3545645,
+   "location": {
+    "name": "Toronto"
+   },
+   "id": 8194287,
+   "updated_at": "2026-10-29T10:42:09-04:00",
+   "requisition_id": "See Opening ID",
+   "title": "Data Analyst, Intern",
+   "company_name": "Stripe",
+   "first_published": "2026-10-01T11:05:36-04:00",
+   "language": "en",
+   "application_deadline": null
+  },
+  {
+   "absolute_url": "https://stripe.com/jobs/search?gh_jid=8186442",
+   "education": "education_required",
+   "internal_job_id": 3542561,
+   "location": {
+    "name": "Singapore"
+   },
+   "id": 8186442,
+   "updated_at": "2026-10-29T10:42:09-04:00",
+   "requisition_id": "See Opening ID",
+   "title": "Financial Data Analyst Intern, Technical Operations",
+   "company_name": "Stripe",
+   "first_published": "2026-09-24T17:24:36-04:00",
+   "language": "en",
+   "application_deadline": null
+  },
+  {
+   "absolute_url": "https://stripe.com/jobs/search?gh_jid=8172508",
+   "education": "education_required",
+   "internal_job_id": 3537062,
+   "location": {
+    "name": "Dublin"
+   },
+   "id": 8172508,
+   "updated_at": "2026-10-29T10:42:09-04:00",
+   "requisition_id": "See Opening ID",
+   "title": "Abuse Investigator",
+   "company_name": "Stripe",
+   "first_published": "2026-09-03T13:32:53-04:00",
+   "language": "en",
+   "application_deadline": null
+  },
+  {
+   "absolute_url": "https://stripe.com/jobs/search?gh_jid=8172510",
+   "education": "education_required",
+   "internal_job_id": 3537063,
+   "location": {
+    "name": "Seattle, San Francisco, New York City"
+   },
+   "id": 8172510,
+   "updated_at": "2026-10-29T10:42:09-04:00",
+   "requisition_id": "See Opening ID",
+   "title": "Abuse Investigator",
+   "company_name": "Stripe",
+   "first_published": "2026-09-09T10:50:29-04:00",
+   "language": "en",
+   "application_deadline": null
+  },
+  {
+   "absolute_url": "https://boards.greenhouse.io/spacex/jobs/8785507002?gh_jid=8785507002",
+   "education": "education_required",
+   "internal_job_id": 6439218002,
+   "location": {
+    "name": "Starbase, TX"
+   },
+   "id": 8785507002,
+   "updated_at": "2026-11-04T18:30:16-05:00",
+   "requisition_id": "6439218002",
+   "title": "Application Software Engineer, Internal Systems",
+   "company_name": "SpaceX",
+   "first_published": "2026-09-07T17:39:59-04:00",
+   "language": "en",
+   "application_deadline": null
+  }
+ ],
+ "meta": {
+  "total": 6
+ }
+}

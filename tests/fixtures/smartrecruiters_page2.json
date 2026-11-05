@@ -1,0 +1,223 @@
+{
+ "offset": 100,
+ "limit": 100,
+ "totalFound": 150,
+ "content": [
+  {
+   "id": "744000158130527",
+   "name": "Experience Team – Associate Product Design Internships – Summer 2027",
+   "uuid": "5006057e-620e-48e1-a8de-6d2b42d0304b",
+   "jobAdId": "dc6c4529-ab25-447f-a7d7-deb9ebd17130",
+   "defaultJobAd": true,
+   "refNumber": "JB0076612",
+   "company": {
+    "identifier": "ServiceNow",
+    "name": "ServiceNow"
+   },
+   "releasedDate": "2026-10-27T19:10:22.662Z",
+   "location": {
+    "city": "San Diego",
+    "region": "CALIFORNIA",
+    "country": "us",
+    "address": "4810 Eastgate Mall",
+    "postalCode": "92121",
+    "remote": false,
+    "hybrid": true,
+    "hybridDescription": "",
+    "fullLocation": "San Diego, CALIFORNIA, United States"
+   },
+   "industry": {
+    "id": "it_and_services",
+    "label": "Information Technology And Services"
+   },
+   "department": {
+    "id": "2294021",
+    "label": "Early In Career"
+   },
+   "function": {
+    "id": "other",
+    "label": "Other"
+   },
+   "typeOfEmployment": {
+    "id": "intern",
+    "label": "Intern"
+   },
+   "experienceLevel": {
+    "id": "not_applicable",
+    "label": "Not Applicable"
+   },
+   "customField": [
+    {
+     "fieldId": "60345fa28b4ba8595bef1863",
+     "fieldLabel": "Recruiting Team",
+     "valueId": "early-in-career",
+     "valueLabel": "Global Emerging Talent"
+    },
+    {
+     "fieldId": "60345d5c5165a31b17288279",
+     "fieldLabel": "Region",
+     "valueId": "722a833b93e4437798309f43c0d25990",
+     "valueLabel": "AMS - North America and Canada"
+    },
+    {
+     "fieldId": "6034601b43915a29a4b3389b",
+     "fieldLabel": "Job Location",
+     "valueId": "L_SAN003",
+     "valueLabel": "4810 Eastgate Mall, San Diego, California, 92121, United States of America(L_SAN003)"
+    },
+    {
+     "fieldId": "60345e1a0b24a127cbdfa148",
+     "fieldLabel": "Employee Type",
+     "valueId": "d86e5e3e318f497985a090b7dcdbc8e6",
+     "valueLabel": "Intern (Fixed Term)"
+    },
+    {
+     "fieldId": "5f63a78f1dae5c5c4e54ba2b",
+     "fieldLabel": "Department",
+     "valueId": "2294021",
+     "valueLabel": "Early In Career"
+    },
+    {
+     "fieldId": "COUNTRY",
+     "fieldLabel": "Country/Region",
+     "valueId": "us",
+     "valueLabel": "United States"
+    },
+    {
+     "fieldId": "5f63a78f1dae5c5c4e54ba2a",
+     "fieldLabel": "Brands",
+     "valueId": "default",
+     "valueLabel": "ServiceNow"
+    },
+    {
+     "fieldId": "603462175165a31b1728827d",
+     "fieldLabel": "Cost Center",
+     "valueId": "CC5815",
+     "valueLabel": "5815 EIC"
+    },
+    {
+     "fieldId": "618ed92b8f5e5f110e5bfb95",
+     "fieldLabel": "Work Persona",
+     "valueId": "5530c877-6b63-4bf5-bde8-215ef35bf172",
+     "valueLabel": "Flexible or Remote"
+    },
+    {
+     "fieldId": "690cc0e8c682c3dbadaa7d73",
+     "fieldLabel": "Job Posting Type",
+     "valueId": "intern",
+     "valueLabel": "Intern"
+    }
+   ],
+   "visibility": "PUBLIC",
+   "ref": "https://api.smartrecruiters.com/v1/companies/ServiceNow/postings/744000158130527",
+   "language": {
+    "code": "en",
+    "label": "English",
+    "labelNative": "English (US)"
+   }
+  },
+  {
+   "id": "744000159939299",
+   "name": "Deal Desk Manager – Global Deal Management",
+   "uuid": "b66a06ee-3a6f-4416-8653-6a58eb7dd395",
+   "jobAdId": "ab787e29-5ca5-4e48-84c6-829ae066da2c",
+   "defaultJobAd": true,
+   "refNumber": "JB0076684",
+   "company": {
+    "identifier": "ServiceNow",
+    "name": "ServiceNow"
+   },
+   "releasedDate": "2026-11-05T17:33:10.812Z",
+   "location": {
+    "city": "San Diego",
+    "region": "California",
+    "country": "us",
+    "address": "4810 Eastgate Mall",
+    "postalCode": "92121",
+    "remote": true,
+    "hybrid": false,
+    "fullLocation": "San Diego, California, United States"
+   },
+   "industry": {
+    "id": "it_and_services",
+    "label": "Information Technology And Services"
+   },
+   "department": {},
+   "function": {
+    "id": "sales",
+    "label": "Sales"
+   },
+   "typeOfEmployment": {
+    "id": "permanent",
+    "label": "Full-time"
+   },
+   "experienceLevel": {
+    "id": "not_applicable",
+    "label": "Not Applicable"
+   },
+   "customField": [
+    {
+     "fieldId": "60345fa28b4ba8595bef1863",
+     "fieldLabel": "Recruiting Team",
+     "valueId": "professional",
+     "valueLabel": "Professional"
+    },
+    {
+     "fieldId": "60345d5c5165a31b17288279",
+     "fieldLabel": "Region",
+     "valueId": "722a833b93e4437798309f43c0d25990",
+     "valueLabel": "AMS - North America and Canada"
+    },
+    {
+     "fieldId": "6034601b43915a29a4b3389b",
+     "fieldLabel": "Job Location",
+     "valueId": "L_SAN003",
+     "valueLabel": "4810 Eastgate Mall, San Diego, California, 92121, United States of America(L_SAN003)"
+    },
+    {
+     "fieldId": "60345e1a0b24a127cbdfa148",
+     "fieldLabel": "Employee Type",
+     "valueId": "0082f6cbe6154da19322cbab1f6aa5af",
+     "valueLabel": "Regular"
+    },
+    {
+     "fieldId": "COUNTRY",
+     "fieldLabel": "Country/Region",
+     "valueId": "us",
+     "valueLabel": "United States"
+    },
+    {
+     "fieldId": "5f63a78f1dae5c5c4e54ba2a",
+     "fieldLabel": "Brands",
+     "valueId": "default",
+     "valueLabel": "ServiceNow"
+    },
+    {
+     "fieldId": "603462175165a31b1728827d",
+     "fieldLabel": "Cost Center",
+     "valueId": "CC3115",
+     "valueLabel": "3115 Commercial Operations"
+    },
+    {
+     "fieldId": "618ed92b8f5e5f110e5bfb95",
+     "fieldLabel": "Work Persona",
+     "valueId": "5530c877-6b63-4bf5-bde8-215ef35bf172",
+     "valueLabel": "Flexible or Remote"
+    },
+    {
+     "fieldId": "690cc0e8c682c3dbadaa7d73",
+     "fieldLabel": "Job Posting Type",
+     "valueId": "professional",
+     "valueLabel": "Professional"
+    }
+   ],
+   "visibility": "PUBLIC",
+   "ref": "https://api.smartrecruiters.com/v1/companies/ServiceNow/postings/744000159939299",
+   "language": {
+    "code": "en",
+    "label": "English",
+    "labelNative": "English (US)"
+   }
+  }
+ ]
+}
