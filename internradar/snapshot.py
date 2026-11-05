@@ -60,7 +60,7 @@ class RecordingClient:
             "url": url, "options": options, "fetched_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
             "status_code": result.status_code, "final_url": result.final_url, "data": trim(result.data),
         }
-        # mtime=0 so re-recording identical data produces identical bytes (clean git diffs).
+        # mtime=0 keeps gzip's own timestamp out of the file, so the bytes depend only on the record.
         blob = json.dumps(record, ensure_ascii=False).encode("utf-8")
         (self.dir / snapshot_name(url, options)).write_bytes(gzip.compress(blob, mtime=0))
         return result

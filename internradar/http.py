@@ -152,7 +152,11 @@ class StringClient:
                     raise FetchError(f"String {e.code}: {detail}", status=e.code, fatal=True)
                 retryable = e.code in (429, 500, 502, 503, 504)
                 if retryable and attempt <= self.max_retries:
-                    delay = float(e.headers.get("Retry-After") or 0) or 2 ** attempt
+                    retry_after = e.headers.get("Retry-After")
+                    try:
+                        delay = float(retry_after) if retry_after is not None else 2 ** attempt
+                    except ValueError:  # an HTTP-date instead of seconds
+                        delay = 2 ** attempt
                     time.sleep(min(delay, 30))
                     continue
                 raise FetchError(f"String {e.code}: {detail}", status=e.code)
